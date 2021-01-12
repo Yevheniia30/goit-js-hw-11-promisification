@@ -1,5 +1,7 @@
 // Перепиши функцию toggleUserState() так, чтобы она не использовала callback-функцию callback, а принимала всего два параметра allUsers и userName и возвращала промис.
 
+// import { reject, resolve } from 'core-js/fn/promise';
+
 const users = [
   { name: 'Mango', active: true },
   { name: 'Poly', active: false },
@@ -7,12 +9,15 @@ const users = [
   { name: 'Lux', active: false },
 ];
 
-const toggleUserState = (allUsers, userName, callback) => {
-  const updatedUsers = allUsers.map(user =>
-    user.name === userName ? { ...user, active: !user.active } : user,
-  );
-
-  callback(updatedUsers);
+const toggleUserState = (allUsers, userName) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const updatedUsers = allUsers.map(user =>
+        user.name === userName ? { ...user, active: !user.active } : user,
+      );
+      resolve(updatedUsers);
+    }, 0);
+  });
 };
 
 const logger = updatedUsers => console.table(updatedUsers);
@@ -20,8 +25,8 @@ const logger = updatedUsers => console.table(updatedUsers);
 /*
  * Сейчас работает так
  */
-toggleUserState(users, 'Mango', logger);
-toggleUserState(users, 'Lux', logger);
+// toggleUserState(users, 'Mango', logger);
+// toggleUserState(users, 'Lux', logger);
 
 /*
  * Должно работать так
